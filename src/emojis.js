@@ -43,7 +43,8 @@ const Emojis = {
                             localStorage.setItem('EmojiPanel-json', emojiXhr.responseText);
                         }
 
-                        const json = JSON.parse(emojiXhr.responseText);
+                        json = JSON.parse(emojiXhr.responseText);
+
                         resolve(json);
                     }
                 };
