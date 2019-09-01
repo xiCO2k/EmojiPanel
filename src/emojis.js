@@ -25,7 +25,11 @@ const Emojis = {
 
         // Load the emojis json
         if (! json && options.json_save_local) {
-            json = localStorage.getItem('EmojiPanel-json');
+            try {
+                json = JSON.parse(localStorage.getItem('EmojiPanel-json'));
+            } catch (e) {
+                json = null;
+            }
         }
 
         let jsonPromise = Promise.resolve(json);
