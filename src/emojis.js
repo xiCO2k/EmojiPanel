@@ -1,5 +1,5 @@
 const modifiers = require('./modifiers');
-
+let json = null;
 const Emojis = {
     load: options => {
         // Load and inject the SVG sprite into the DOM
@@ -21,7 +21,10 @@ const Emojis = {
         }
 
         // Load the emojis json
-        const json = localStorage.getItem('EmojiPanel-json');
+        if (! json && options.json_save_local) {
+            json = localStorage.getItem('EmojiPanel-json');
+        }
+
         let jsonPromise = Promise.resolve(json);
         if(json == null) {
             jsonPromise = new Promise(resolve => {
@@ -29,6 +32,10 @@ const Emojis = {
                 emojiXhr.open('GET', options.json_url, true);
                 emojiXhr.onreadystatechange = () => {
                     if(emojiXhr.readyState == XMLHttpRequest.DONE && emojiXhr.status == 200) {
+                        if (options.json_save_local) {
+                            localStorage.setItem('EmojiPanel-json', emojiXhr.responseText);
+                        }
+
                         const json = JSON.parse(emojiXhr.responseText);
                         resolve(json);
                     }
